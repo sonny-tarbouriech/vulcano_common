@@ -1,7 +1,6 @@
 <?xml version="1.0"?>
 <robot name="vulcano" xmlns:xacro="http://www.ros.org/wiki/xacro">
-
-  <xacro:macro name="vulcano" params="hw_interface:=hardware_interface/PositionJointInterface">
+  <xacro:macro name="vulcano" params="joint_limited:=false custom_limits:=false ur_hw_interface:=hardware_interface/PositionJointInterface">
     <xacro:property name="PI" value="3.1415926535897931"/>
     <xacro:arg name="joint_limited" default="false"/>
     <!-- ***************** -->
@@ -16,7 +15,6 @@
 
     <!-- Import UR10 -->
     <xacro:include filename="$(find ur_description)/urdf/ur10.urdf.xacro"/>
-    <!--<xacro:include filename="$(find ur_description)/urdf/common.gazebo.xacro"/>-->
     <!-- Import calibrated UR10 -->
     <xacro:include filename="$(find vulcano_calibrated_ur_description)/urdf/calibrated_ur10_vulcano_left_arm.urdf.xacro"/>
     <xacro:include filename="$(find vulcano_calibrated_ur_description)/urdf/calibrated_ur10_vulcano_right_arm.urdf.xacro"/>
@@ -44,8 +42,20 @@
       <parent link="torso_tkd668_link"/>
       <child link="right_arm_base_link"/>
     </joint>
-    <!--xacro:ur10_robot prefix="right_arm_" joint_limited="$(arg joint_limited)"/-->
-    <xacro:right_arm_ur10_robot prefix="right_arm_" joint_limited="$(arg joint_limited)" transmission_hw_interface="${hw_interface}"/>
+    <xacro:if value="${custom_limits}">
+      <xacro:right_arm_ur10_robot prefix="right_arm_" joint_limited="${joint_limited}"
+        shoulder_pan_lower_limit="${0}" shoulder_pan_upper_limit="${pi}"
+        shoulder_lift_lower_limit="${-5*pi/4}" shoulder_lift_upper_limit="${-pi/4}"
+        elbow_joint_lower_limit="${-3*pi/4}" elbow_joint_upper_limit="${pi/4}"
+        wrist_1_lower_limit="${-pi}" wrist_1_upper_limit="${0}"
+        wrist_2_lower_limit="${-pi}" wrist_2_upper_limit="${pi}"
+        wrist_3_lower_limit="${-pi}" wrist_3_upper_limit="${pi}"
+        transmission_hw_interface="${hw_interface}"/>
+    </xacro:if>
+    <xacro:unless value="${custom_limits}">
+      <xacro:right_arm_ur10_robot prefix="right_arm_" joint_limited="${joint_limited}"
+        transmission_hw_interface="${hw_interface}"/>
+    </xacro:unless>
 
     <!-- Fix left arm to torso -->
     <joint name="torso_left_arm_base_joint" type="fixed">
@@ -53,9 +63,20 @@
       <parent link="torso_tkd668_link"/>
       <child link="left_arm_base_link"/>
     </joint>
-    <!--xacro:ur10_robot prefix="left_arm_" joint_limited="$(arg joint_limited)"/-->
-    <xacro:left_arm_ur10_robot prefix="left_arm_" joint_limited="$(arg joint_limited)" transmission_hw_interface="${hw_interface}"/>
-
+    <xacro:if value="${custom_limits}">
+      <xacro:left_arm_ur10_robot prefix="left_arm_" joint_limited="${joint_limited}"
+        shoulder_pan_lower_limit="${-pi}" shoulder_pan_upper_limit="${0}"
+        shoulder_lift_lower_limit="${-3*pi/4}" shoulder_lift_upper_limit="${pi/4}"
+        elbow_joint_lower_limit="${-pi/4}" elbow_joint_upper_limit="${3*pi/4}"
+        wrist_1_lower_limit="${-pi}" wrist_1_upper_limit="${0}"
+        wrist_2_lower_limit="${-pi}" wrist_2_upper_limit="${pi}"
+        wrist_3_lower_limit="${-pi}" wrist_3_upper_limit="${pi}"
+        transmission_hw_interface="${hw_interface}"/>
+    </xacro:if>
+    <xacro:unless value="${custom_limits}">
+      <xacro:left_arm_ur10_robot prefix="left_arm_" joint_limited="${joint_limited}"
+        transmission_hw_interface="${hw_interface}"/>
+    </xacro:unless>
 
     <xacro:tube_support prefix="left_arm_ee_" parent="left_arm_ee_link">
       <origin xyz="0.012 0 0.0975" rpy="0 0 0"/>
@@ -69,5 +90,4 @@
 
     <xacro:ros_control />
   </xacro:macro>
-
 </robot>
