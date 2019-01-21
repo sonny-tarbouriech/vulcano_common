@@ -13,7 +13,7 @@
     <xacro:include filename="$(find vulcano_torso_description)/urdf/tube_support/tube_support.urdf.xacro"/>
     <xacro:include filename="$(find robotnik_sensors)/urdf/all_sensors.urdf.xacro" />
     
-    <xacro:macro name="vulcano_torso" params="prefix hq"> <!-- TODO: check hq variable -->
+    <xacro:macro name="vulcano_torso" params="prefix hq transmission_hw_interface"> <!-- TODO: check hq variable -->
         <link name="${prefix}torso_base_link">
             <inertial>
                 <origin xyz="0 0 0" rpy="0 0 0 "/>
@@ -22,7 +22,7 @@
             </inertial>
         </link>
         
-        <xacro:guidance prefix="${prefix}" parent="${prefix}torso_base_link" hq="${hq}"/>
+        <xacro:guidance prefix="${prefix}" parent="${prefix}torso_base_link" hq="${hq}" transmission_hw_interface="${hw_interface}"/>
 
         <joint name="${prefix}torso_guidance_pantilt_joint" type="fixed">
           <origin xyz="-0.191 0.0 1.178" rpy="0 0 ${180*deg2rad}"/>

@@ -5,7 +5,7 @@
   <xacro:property name="elevation_max_longitude" value="0.7"/>
   <xacro:property name="z_elevation_joint" value="0.442"/>
   <!-- Define the torso -->
-  <xacro:macro name="guidance" params="prefix parent hq">
+  <xacro:macro name="guidance" params="prefix parent hq transmission_hw_interface">
     <joint name="${prefix}torso_guidance_base_joint" type="fixed">
       <origin xyz="0.0 0.0 0.0" rpy="0 0 0"/>
       <parent link="${parent}"/>
@@ -48,7 +48,7 @@
 	<transmission name="${prefix}torso_guidance_revolution_trans">
       <type>transmission_interface/SimpleTransmission</type>
       <joint name="${prefix}torso_guidance_revolution_joint">
-        <hardwareInterface>PositionJointInterface</hardwareInterface> 
+        <hardwareInterface>${transmission_hw_interface}</hardwareInterface> 
       </joint>
       <actuator name="${prefix}torso_guidance_revolution_motor">
         <mechanicalReduction>1</mechanicalReduction>
@@ -91,7 +91,7 @@
 	<transmission name="${prefix}torso_guidance_elevation_trans"> 
       <type>transmission_interface/SimpleTransmission</type>
       <joint name="${prefix}torso_guidance_elevation_joint">
-        <hardwareInterface>PositionJointInterface</hardwareInterface> 
+        <hardwareInterface>${transmission_hw_interface}</hardwareInterface> 
       </joint>
       <actuator name="${prefix}torso_guidance_elevation_motor">
         <mechanicalReduction>1</mechanicalReduction>
