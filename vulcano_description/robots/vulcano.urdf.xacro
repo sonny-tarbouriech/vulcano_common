@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <robot name="vulcano" xmlns:xacro="http://www.ros.org/wiki/xacro">
-  <xacro:macro name="vulcano" params="joint_limited:=false custom_limits:=false ur_hw_interface:=hardware_interface/PositionJointInterface">
+  <xacro:macro name="vulcano" params="joint_limited:=false custom_limits:=false hw_interface:=hardware_interface/PositionJointInterface">
     <xacro:property name="PI" value="3.1415926535897931"/>
     <xacro:arg name="joint_limited" default="false"/>
     <!-- ***************** -->

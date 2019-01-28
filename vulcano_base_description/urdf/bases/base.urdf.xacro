@@ -1,16 +1,16 @@
 <?xml version="1.0"?>
-<robot xmlns:xacro="http://www.ros.org/wiki/xacro"> 
-  
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
   <xacro:macro name="base" params="prefix publish_bf hq">
 
   <!-- Robot mechanical and motor parameters -->
   <xacro:property name="PI" value="3.1415926535897931"/>
   <xacro:property name="wheel_width" value="0.075" />
-  
+
   <xacro:macro name="box_inertia" params="m x y z">
     <inertia  ixx="${m*(y*y+z*z)/12}" ixy = "0" ixz = "0"
               iyy="${m*(x*x+z*z)/12}" iyz = "0"
-              izz="${m*(x*x+y*y)/12}" /> 
+              izz="${m*(x*x+y*y)/12}" />
   </xacro:macro>
 
   <!-- BASE FOOTPRINT -->
@@ -28,7 +28,7 @@
       <origin xyz="0 0 ${wheel_radius}" rpy="0 0 0" /> <!-- ${wheel_radius} property must be defined inside wheel description -->
       <parent link="${prefix}base_footprint"/>
       <child link="${prefix}base_link" />
-    </joint>    
+    </joint>
   </xacro:if>
 
   <!-- BASE_LINK -->
@@ -53,13 +53,13 @@
        <material name="darkgrey">
          <color rgba="0.1 0.1 0.1 1"/>
        </material>
-    </visual>  
+    </visual>
     <collision>
        <origin xyz="0 0 0" rpy="0 0 0 " />
        <geometry>
          <mesh filename="package://vulcano_base_description/meshes/bases/vulcano_base_chassis.dae"/>
        </geometry>
-    </collision>     
+    </collision>
   </link>
 
   <link name="${prefix}cabinet_link">
@@ -83,20 +83,21 @@
        <material name="darkgrey">
          <color rgba="0.1 0.1 0.1 1"/>
        </material>
-    </visual>  
+    </visual>
     <collision>
-       <origin xyz="0 0 0" rpy="0 0 0 " />
-       <geometry>
-         <mesh filename="package://vulcano_base_description/meshes/bases/vulcano_base_cabinet.dae"/>
-       </geometry>
-    </collision>     
+      <origin rpy="0 0 0" xyz="-0.009 -0.00005 0.32"/>
+      <geometry>
+          <!-- <mesh filename="package://vulcano_base_description/meshes/bases/vulcano_base_cabinet.dae"/> -->
+          <box size="1.3132 0.7999 0.64" />
+      </geometry>
+    </collision>
   </link>
 
   <joint name="${prefix}cabinet_joint" type="fixed">
-    <origin xyz="0 0 0.234" rpy="0 0 0" /> 
+    <origin xyz="0 0 0.234" rpy="0 0 0" />
     <parent link="${prefix}base_link"/>
     <child link="${prefix}cabinet_link" />
-  </joint>    
+  </joint>
 
   </xacro:macro>
 </robot>
